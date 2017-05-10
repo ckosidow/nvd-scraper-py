@@ -14,5 +14,8 @@ with open('dependencies.csv') as csvfile:
 
         resultTable = tree.xpath('//table[@data-testid="vuln-results-table"]//tbody//tr//th//a/@href')
 
-        for result in resultTable:
-            print(query + " - https://nvd.nist.gov" + result)
+        if resultTable:
+            for result in resultTable:
+                print(query + " - https://nvd.nist.gov" + result)
+        else:
+            print(query + " - nothing found")
