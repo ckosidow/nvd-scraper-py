@@ -14,14 +14,17 @@ with open('dependencies.csv') as csvfile:
             page = requests.get(mavenArtifact)
             tree = html.fromstring(page.content)
 
-            resultTable = tree.xpath('//table[@class="grid versions"]/tbody/tr[td/a[@href="/repos/central"][1]]/td/a/@href')
+            resultTable = tree.xpath('//table[@class="grid versions"]/tbody/tr[td/a[@href="/repos/central"]]'
+                                     '[td/a/@class="vbtn release"][1]/td/a[1]/@href')
 
             if resultTable:
                 for result in resultTable[:1]:
-                    vulnWriter.writerow([dependency, "URL: " + mavenArtifact, result])
+                    version = result.split("/")[1]
 
-                    print(dependency + " - " + result)
+                    vulnWriter.writerow([mavenArtifact, version])
+
+                    print(mavenArtifact + " - " + version)
             else:
-                vulnWriter.writerow([dependency, mavenArtifact])
+                vulnWriter.writerow([mavenArtifact])
 
-                print(dependency + " -")
+                print(mavenArtifact + " -")
